@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+    <head>
+        <meta charset="utf-8">
+        <title>d3geo-test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/page.css' %}" />
+
+<style>
+            svg { margin-bottom:-4px; }
+            path { stroke: #666; stroke-width: .5px; fill: white; }
+            path:hover { fill: #666; }            
+
+
+.tooltip {
+                color: #222; 
+                background: #fff; 
+                padding: .5em; 
+                text-shadow: #f5f5f5 0 1px 0;
+                border-radius: 2px; 
+                box-shadow: 0px 0px 2px 0px #a6a6a6; 
+                opacity: 0.9; 
+                position: absolute;
+            }
+.hidden {
+                display: none;
+            }
+.country:hover{
+    fill:white;
+    stroke: #fff;
+    stroke-width: .7px;
+    }
+
+button {
+  padding: 5px 5px;
+  margin-top: 10px;
+  margin-bottom: 2px;
+}
+
+.caption {
+  font: 16px sans-serif;
+  /*font-weight: bold;*/
+}
+
+.legendP {
+  font: 8px sans-serif;
+  background-color: #ccccb3;
+  margin-top: 20px;
+}
+
+.legendP path {
+  display: none;
+}
+
+.legendP line {
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+#legend_p{
+  width: 100%;
+  height: 100px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  position: relative;
+
+}   
+        </style>
+    </head>
+    <body>        
+
+    <ul class="nav nav-tabs" id = "tab">
+        <li class="active">
+            <a href="#">Home</a>
+        </li>
+        <li>
+            <a href="#">Page2</a>
+        </li>
+        <li>
+            <a href="#">Page3</a>
+        </li>
+    </ul>
+
+    <div id="section1" class="container-fluid">
+        <div id="section2" class="row-fluid">
+          <div id="legend_p"></div>
+          <div class="section3">
+            <div id="map_p"></div>        
+            <button resetP>ReDraw</button>
+            <button zoomP id="zoom_in">+</button>
+            <button zoomP id="zoom_out">-</button>
+            <button snapP id="snapP">capture</button>
+            <button each id="snapP">each/all</button>
+            <div id="section4">
+              <p>&nbsp;&nbsp;Select a variable / index</p>
+              <p>&nbsp;&nbsp;Select a visualization</p>
+              <p>&nbsp;&nbsp;Grid size</p>
+              <button visual id="visualP">Go</button>
+            </div>
+
+          </div>
+          <!--
+          <div class="section3">          
+            <div id="map_future"></div>
+            <button resetF>ReDraw</button>
+            <button zoomF id="zoom_in">+</button>
+            <button zoomF id="zoom_out">-</button>
+          </div>-->
+
+        </div>
+        <div id="section2">
+                <!--div class="span3" id = "slider-4"></div-->
+        <div class="span2" id = "map"></div>
+        <div class="span3" id = "des_map"></div>
+
+        <div class="span5" id = "map2"></div>
+        </div>
+
+    </div>
+        <!--
+<div class="buttons">
+  <button data-zoom="+1">Zoom In</button>
+  <button data-zoom="-1">Zoom Out</button>
+</div> -->
+  <script src="{% static 'node_modules/topojson/node_modules/d3/d3.js' %}"></script>
+  <script src="{% static 'node_modules/d3-geo-projection/d3.geo.projection.js' %}"></script>
+  <script src="{% static 'node_modules/topojson/build/topojson.js' %}"></script>
+<script src="{% static 'map/MapPlot.js' %}"></script>
+    </body>
+</html>

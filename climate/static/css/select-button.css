@@ -1,0 +1,72 @@
+/* --------------------------------------------------------------------- */
+/* ------------------------------button--------------------------------- */
+.button2 {
+    background: #99fa99 repeat-x scroll 0 0;
+    color: #1E1E1E;
+    display: inline-block;
+    font-size: 13px;
+    line-height: 16px;
+    margin-left: 4px;
+    padding: 7px 22px 9px 20px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;
+}
+.button2:hover {
+	background: #21a51e;
+	color:#fff;
+	text-decoration:none;
+}
+
+.button1 {
+    background: #077054 repeat-x scroll 0 0;
+    color: #fff;
+    display: inline-block;
+    font-size: 13px;
+    line-height: 15px;
+    margin-left: 4px;
+    padding: 7px 22px 9px 20px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;
+}
+.button1:hover {
+	background: #d3a3ff;
+	color:#1E1E1E;
+	text-decoration:none;
+}
+
+/* --------------------------------------------------------------------- */
+/* ------------------------------select--------------------------------- */
+.style-select{
+    margin: 8px;
+   height: 29px;
+   overflow: hidden;
+   width: 200px;
+}
+
+.style-select select {
+   background: transparent;
+   border: none;
+   font-size: 14px;
+   height: 29px;
+   padding: 5px; /* If you add too much padding here, the options won't show in IE */
+   width: 200px;
+}
+
+.l-green{
+  background-color:#99fa99;
+}
+
+.l-blue{
+  background-color:#E3F9F9;
+}
+
+.semi-sq {
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+   border-radius: 5px;
+}
+
+.select-style{
+    font-size: 14px;
+    padding: 5px;
+}

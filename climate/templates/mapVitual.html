@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Map Vitual</title>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+{% load staticfiles %}
+<img src="{% static "banner.jpg" %}" alt="My image"/>
+<select id="LtLn" onchange="LtLn_val()">
+	<option value="lat">Lat</option>
+	<option value="lon">Lon</option>
+</select> 
+<br/>
+<p id="demo"></p>
+
+<script type="text/javascript">
+    function LtLn_val(){
+    	er = document.getElementById("LtLn").value;
+    	document.getElementById("demo").innerHTML = er;
+    }
+var data = ["Option 1", "Option 2", "Option 3"];
+
+var select = d3.select('body')
+  .append('select')
+  	.attr('class','sele')
+    .on('change',onchange)
+
+var options = select
+  .selectAll('option')
+	.data(data).enter()
+	.append('option')
+		.text(function (d) { return d; });
+
+
+function onchange() {
+	selectValue = d3.select('.sele').property('value')
+	d3.select('body')
+	  .select('.pi')
+        .remove()
+	d3.select('body')
+		.append('p')
+		.attr('class','pi')
+		.text(selectValue + ' is the last selected option.')
+};
+    //var str = er.option[er.selectIndex].value;
+    
+    //$("#demo").load("{% url 'data_ltln' %}");
+    d3.json("{% static 'data/geoAvgTsPrG9.json' %}", function(error, json){
+    	//if(error) return console.warn(error);
+    	console.log(json);
+    });
+//"{% url 'data_ltln' %}"
+
+
+</script>
+</body>
+</html>
