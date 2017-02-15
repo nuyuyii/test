@@ -46,9 +46,9 @@
 .style-select select {
    background: transparent;
    border: none;
-   font-size: 14px;
-   height: 29px;
-   padding: 5px; /* If you add too much padding here, the options won't show in IE */
+   font-size: 12px;
+   height: 20px;
+   padding: 1px; /* If you add too much padding here, the options won't show in IE */
    width: 200px;
 }
 
@@ -67,6 +67,7 @@
 }
 
 .select-style{
-    font-size: 14px;
-    padding: 5px;
+    font-size: 12px;
+    font-family: "Times New Roman", Times, sans-serif;
+    padding: 1px;
 }

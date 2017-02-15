@@ -2,7 +2,8 @@ import math, datetime
 #import rpy2.robjects.lib.ggplot2 as ggplot2
 import rpy2.robjects as ro
 from rpy2.robjects.packages import importr
-
+import numpy as np
+from decimal import *
 importr("climdex.pcic")
 importr("PCICt")
 #mydata = ro.DataFrame.from_csvfile('/home/thiranan/Project2/ec45indcal.csv')
@@ -69,7 +70,7 @@ csdi <- function(file_name){
 }
 dtr <- function(file_name){
   ci_mydata <- mdata(file_name)
-  dtr_mydata <- climdex.dtr(ci_mydata)
+  dtr_mydata <- climdex.dtr(ci_mydata,freq = c("annual"))
   return(dtr_mydata)
 }
 sdii <- function(file_name){
@@ -99,7 +100,7 @@ cdd <- function(file_name){
 }
 cwd <- function(file_name){
   ci_mydata <- mdata(file_name)
-  cwd_mydata <- climdex.cwd(ci_mydata,spells.can.span.years = FALSE)
+  cwd_mydata <- climdex.cwd(ci_mydata,ci_mydata,spells.can.span.years = FALSE)
   cwd_mydata[is.na(cwd_mydata)] <- 0
   return(cwd_mydata)
 }
@@ -120,54 +121,55 @@ prcptot <- function(file_name){
 }
 txx <- function(file_name){
   ci_mydata <- mdata(file_name)
-  txx_mydata <- climdex.txx(ci_mydata)
+  txx_mydata <- climdex.txx(ci_mydata,freq = c("annual"))
   return(txx_mydata)
 }
 tnx <- function(file_name){
   ci_mydata <- mdata(file_name)
-  tnx_mydata <- climdex.tnx(ci_mydata)
+  tnx_mydata <- climdex.tnx(ci_mydata,freq = c("annual"))
   return(tnx_mydata)
 }
 txn <- function(file_name){
   ci_mydata <- mdata(file_name)
-  txn_mydata <- climdex.txn(ci_mydata)
+  txn_mydata <- climdex.txn(ci_mydata,freq = c("annual"))
   return(txn_mydata)
 }
 tnn <- function(file_name){
   ci_mydata <- mdata(file_name)
-  tnn_mydata <- climdex.tnn(ci_mydata)
+  tnn_mydata <- climdex.tnn(ci_mydata,freq = c("annual"))
   return(tnn_mydata)
 }
 tn10p <- function(file_name){
   ci_mydata <- mdata(file_name)
-  tn10p_mydata <- climdex.tn10p(ci_mydata)
+  tn10p_mydata <- climdex.tn10p(ci_mydata,freq = c("annual"))
   return(tn10p_mydata)
 }
 tx10p <- function(file_name){
   ci_mydata <- mdata(file_name)
-  tx10p_mydata <- climdex.tx10p(ci_mydata)
+  tx10p_mydata <- climdex.tx10p(ci_mydata,freq = c("annual"))
   return(tx10p_mydata)
 }
 tn90p <- function(file_name){
   ci_mydata <- mdata(file_name)
-  tn90p_mydata <- climdex.tn90p(ci_mydata)
+  tn90p_mydata <- climdex.tn90p(ci_mydata,freq = c("annual"))
   return(tn90p_mydata)
 }
 tx90p <- function(file_name){
   ci_mydata <- mdata(file_name)
-  tx90p_mydata <- climdex.tx90p(ci_mydata)
+  tx90p_mydata <- climdex.tx90p(ci_mydata,freq = c("annual"))
   return(tx90p_mydata)
 }
 rx1day <- function(file_name){
   ci_mydata <- mdata(file_name)
-  rx1day_mydata <- climdex.rx1day(ci_mydata)
+  rx1day_mydata <- climdex.rx1day(ci_mydata,freq = c("annual"))
   return(rx1day_mydata)
 }
 rx5day <- function(file_name){
   ci_mydata <- mdata(file_name)
-  rx5day_mydata <- climdex.rx5day(ci_mydata)
+  rx5day_mydata <- climdex.rx5day(ci_mydata,freq = c("annual"))
   return(rx5day_mydata)
 }
+
 """
 
 powerpack = SignatureTranslatedAnonymousPackage(string, "powerpack")
@@ -198,7 +200,7 @@ class Climdex(object):
         return dat_y
 
     def txx(self):
-        year = self.dat()
+        year = self.dat2()
         txx_arr = powerpack.txx(self.file_name)
         result = []
         for i in range(0,len(year)):
@@ -206,7 +208,7 @@ class Climdex(object):
         return result
 
     def tnx(self):
-        year = self.dat()
+        year = self.dat2()
         tnx_arr = powerpack.tnx(self.file_name)
         result = []
         for i in range(0,len(year)):
@@ -214,7 +216,7 @@ class Climdex(object):
         return result
 
     def txn(self):
-        year = self.dat()
+        year = self.dat2()
         txn_arr = powerpack.txn(self.file_name)
         result = []
         for i in range(0,len(year)):
@@ -222,7 +224,7 @@ class Climdex(object):
         return result
 
     def tnn(self):
-        year = self.dat()
+        year = self.dat2()
         tnn_d = powerpack.tnn(self.file_name)
         result = []
         for i in range(0,len(year)):
@@ -230,7 +232,7 @@ class Climdex(object):
         return result
 
     def tn10p(self):
-        year = self.dat()
+        year = self.dat2()
         tn10p_d = powerpack.tn10p(self.file_name)
         result = []
         for i in range(0,len(year)):
@@ -238,7 +240,7 @@ class Climdex(object):
         return result
 
     def tx10p(self):
-        year = self.dat()
+        year = self.dat2()
         tx10p_d = powerpack.tx10p(self.file_name)
         result = []
         for i in range(0,len(year)):
@@ -246,7 +248,7 @@ class Climdex(object):
         return result
 
     def tn90p(self):
-        year = self.dat()
+        year = self.dat2()
         tn90p_d = powerpack.tn90p(self.file_name)
         result = []
         for i in range(0,len(year)):
@@ -254,7 +256,7 @@ class Climdex(object):
         return result
 
     def tx90p(self):
-        year = self.dat()
+        year = self.dat2()
         tx90p_d = powerpack.tx90p(self.file_name)
         result = []
         for i in range(0,len(year)):
@@ -262,7 +264,7 @@ class Climdex(object):
         return result
 
     def rx1day(self):
-        year = self.dat()
+        year = self.dat2()
         rx1day_d = powerpack.rx1day(self.file_name)
         result = []
         for i in range(0,len(year)):
@@ -270,7 +272,7 @@ class Climdex(object):
         return result
 
     def rx5day(self):
-        year = self.dat()
+        year = self.dat2()
         rx5day_d = powerpack.rx5day(self.file_name)
         result = []
         for i in range(0,len(year)):
@@ -334,8 +336,10 @@ class Climdex(object):
         return result
 
     def dtr(self):
-        year = self.dat()
+        year = self.dat2()
         dtr_d = powerpack.dtr(self.file_name)
+        dtr_d = np.array(dtr_d)
+        dtr_d = [float(Decimal("%.1f"%e)) for e in dtr_d]
         result = []
         for i in range(0,len(year)):
              result.append([year[i],float(dtr_d[i])])
@@ -413,6 +417,8 @@ class Climdex(object):
              result.append([year[i],float(prcptot_d[i])])
         return result
 
+#print(len(a))
+#print(b)
 
 
 

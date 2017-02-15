@@ -1,8 +1,14 @@
 
-//<script src="{% static 'js/MapPlot.js' %}"></script>
-
 /*******************************/
 /************ Label ************/
+
+//var nLegend = ["temperature (°C)", "preciptation (mm/day)"]
+var nLegend = {"tem": {"color":["#4575b4", "#ffffbf", "#a50026"],
+"name":"Temperature (°C)","domain":[-10, 20, 35],"scale":[-10, 40]},
+"prec":{"color":["#543005","#FFFFFF","#2EFEF7","#003c30"],"name":"preciptation (kg/day)",
+"domain":[0, .1, .15, .2],"scale":[0, .2]}};
+
+var indL = "tem";
 
 var legend = d3.select('#legend_p');
 
@@ -10,12 +16,12 @@ var widthL = parseInt(legend.style('width')),
     heightL = parseInt(legend.style('height'));
 
 var color = d3.scale.linear()
-    .domain([-10, 20, 35])
-    .range(["#4575b4", "#ffffbf", "#a50026"])
+    .domain(nLegend[indL]['domain'])
+    .range(nLegend[indL]['color'])
     .interpolate(d3.interpolateHcl);
 
 var x = d3.scale.linear()
-    .domain([-10, 40])
+    .domain(nLegend[indL]['scale'])
     .range([0, widthL-20]);
 
 var xAxis = d3.svg.axis()
@@ -32,7 +38,7 @@ var svgL = legend.append("svg")
     .attr("height", heightL)
     .attr("class", "legendP")
   .append("g")
-    .attr("transform", "translate(10,50)");
+    .attr("transform", "translate(10,30)");
 
 svgL.selectAll("rect")
     .data(pair(x.ticks(20)))
@@ -44,9 +50,9 @@ svgL.selectAll("rect")
 
 svgL.call(xAxis).append("text")
     .attr("class", "caption")
-    .attr("y", -20)
-    .attr("x", (widthL/2)-80)
-    .text("temperature (°C)");
+    .attr("y", -10)
+    .attr("x", widthL/2)
+    .text(nLegend[indL]['name']);
 
 
 function pair(array) {
@@ -85,10 +91,10 @@ function pair(array) {
 
                 zoomMap.translate(t);
                 gMap.attr("transform", "translate(" + t + ")scale(" + s + ")");
-                gMap.selectAll("path").style("stroke-width", .5 / s + "px");
+                //gMap.selectAll("path").style("stroke-width", .5 / s + "px");
                 //console.log(t,s);
                 gMap2.attr("transform", "translate(" + t + ")scale(" + s + ")");
-                gMap2.selectAll("path").style("stroke-width", .5 / s + "px");
+                gMap2.selectAll("path").style("stroke-width", .9 / s + "px");
             }
 
             //*************setup map
@@ -190,18 +196,18 @@ function pair(array) {
                // var rt = [width/2, height/2];
                 gMap.transition()
                    .duration(500)
-                   .attr("transform","translater("+width/2+","+height/2+")scale(" +width+ ")")
-                   .style("stroke-width", .5 + "px");
+                   .attr("transform","translater("+width/2+","+height/2+")scale(" +width+ ")");
+                   //.style("stroke-width", .5 + "px");
                 gMap2.transition()
                    .duration(500)
                    .attr("transform","translater("+width/2+","+height/2+")scale(" +width+ ")")
-                   .style("stroke-width", .5 + "px");
+                   .style("stroke-width", .9 + "px");
 
-                /*  d3.select('.svgMap').remove();
-                  setupMap(width,height)
-                  drawMapL0(dataLand);
-                  drawMapL1(dataTs);
-                  //setupMap(width,height);*/
+               /* d3.select('.svgMap').remove();
+                setupMap(width,height)
+                drawMapL0(dataLand);
+                drawMapL1(dataTs);
+                setupMap(width,height);*/
             }
 
 d3.selectAll("button[resetP]").on("click", resetMap);

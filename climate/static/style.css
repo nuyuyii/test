@@ -7,7 +7,7 @@ body{margin:0; padding: 0;
 	font-size: 14px;
     font-family: verdana, Arial, sans-serif;
     color: #FFF;
-    min-width: 980px;
+    min-width: 1080px;
     background-color: #29313C;}
 
 img{display:block; margin:0; padding:0; border:0;}
@@ -36,14 +36,14 @@ div.wrapper h5, div.wrapper h6{margin:0 0 20px 0;
 .col6{color: #FFFFFF; background-color: #29313C;}
 
 /* **************************Generalise*********************************** */
-#header, #tbar, #intro,#container, #footer,#follow{display: block; position: relative; width: 960px; margin:0 auto;}
+#header, #tbar, #intro,#container, #footer,#follow{display: block; position: relative; width: 1080px; margin:0 auto;}
 
 /* --------------------------------------------------------------------- */
 /* ----------------------------Header----------------------------------- */
-#header{padding:10px 0; font-family:Georgia, "Times New Roman", Times, serif;}
+#header{padding: 0; font-family:Georgia, "Times New Roman", Times, serif;}
 #header #logo{display:block; float:left; width:300px; margin-top:7px;}
 #header h1, #header p{margin:0; padding:0; line-height:normal;}
-#header h1{margin:0 0 10px 0; padding:0; font-size:36px; border:none;}
+#header h1{margin:0 0 0 0; padding:0; font-size:24px; border:none;}
 #header h1{color:#3A6C86; background-color:#E3F1F9;}
 
 /* --------------------------------------------------------------------- */
@@ -53,12 +53,18 @@ div.wrapper h5, div.wrapper h6{margin:0 0 20px 0;
 
 /* --------------------------------------------------------------------- */
 /* ------------------------------Column--------------------------------- */
-#container{padding:15px 0 20px 0; font-size:16px; font-family:Georgia, "Times New Roman", Times, serif;}
+#container{color:#000;padding:15px 0 20px 0; font-size:12px; font-family:Georgia, "Times New Roman", Times, serif;}
 #container .fl_legend, #container .fl_time{
 	display:block;
-	width: 100%;
+	width: 70%;
 	padding:0px;
 	float:left;
+}
+#container .fl_tool{
+    display:block;
+	width: 28%;
+	padding:0px;
+	float:right;
 }
 #container .fl_left, #container .fl_right{
 	display:block;
@@ -68,10 +74,9 @@ div.wrapper h5, div.wrapper h6{margin:0 0 20px 0;
 
 /* ------------------------------------------- */
 /* -------------mapBox------------------------ */
-.mapBox {
+.mapBox, .toolBox {
   position: relative;
   width: 100%;
-  height: 100%;
   margin-bottom: 20px;
   background-color: #fff;
   border: 1px solid transparent;
@@ -80,6 +85,14 @@ div.wrapper h5, div.wrapper h6{margin:0 0 20px 0;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
           box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 }
+.mapBox{
+  min-height: 320px;
+}
+.toolBox{
+  min-height: 200px;
+}
+
+
 .mapBox-body {
   padding: 8px;
 }
@@ -88,6 +101,11 @@ div.wrapper h5, div.wrapper h6{margin:0 0 20px 0;
   border-bottom: 1px solid transparent;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
+}
+
+.mapBox-heading p{
+	padding: 0px;
+	margin:0px;
 }
 .mapBox > .mapBox-heading{
   color: #333;
@@ -107,24 +125,25 @@ div.wrapper h5, div.wrapper h6{margin:0 0 20px 0;
    background-color:#F4F4F4;
    border:1% solid #d6d6c2;color:#ffffe6;
    border-radius: 3px;
-   width: 100%;
-   height: 330px;
+   width: 75%;
+   height: 260px;
    /*border: 1px solid black;*/
    margin: 0 auto;
    padding: 0;
-   float:left;
+   float:center;
    color: black;
 }  
 
 #map {
-   background-color:#F4F4F4; position:relative;
-    width:100%; height: 330px;
+    background-color:#F4F4F4; position:relative;
+    margin-bottom: 20px;
+    width:100%; height: 250px;
     border:0px solid #d6d6c2;
 }
 
 #map3 {
-	background-color:#F4F4F4; position:relative; 
-   width:100%; height:100%; border:0px solid #d6d6c2;
+   position:relative; 
+   width:100%; height:100%;
    border-radius: 1%; color:#330000; 
    font-weight:bold; font-size: 7;
 }
@@ -138,6 +157,18 @@ div.wrapper h5, div.wrapper h6{margin:0 0 20px 0;
 
 }
 
+p.serif {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 14px;
+            font-color:black;
+        }
+       
+p.sansserif {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 10px;
+        font-color:black;
+}
+
 svg { margin-bottom:-4px; font: 14px sans-serif; }
 path { stroke: #000;fill: none; }
 /* ------------------------------------------- */
@@ -145,17 +176,17 @@ path { stroke: #000;fill: none; }
 #legend_p, .fl_time{
   display:block;
   width: 100%;
-  height: 100px;
-  margin-top: 0px;
-  margin-bottom: 30px;
+  height: 80px;
   position: relative;
   border: 1px solid transparent;
   border-color: #000;
 }  
+#legend_p{
+  margin: 10px 0 10px 0;
+}
 .legendP {
-  font: 10px sans-serif;
+  font: 8px sans-serif;
   margin-top: 0px;
-  border: 1px solid transparent;
   border-color: #000;
 }
 
@@ -168,12 +199,16 @@ path { stroke: #000;fill: none; }
   shape-rendering: crispEdges;
 }
 .caption {
-  font: 14px sans-serif;
+  font: 12px sans-serif;
   text-align: right;
+  text-anchor:middle;
   /*font-weight: bold;*/
 }
 
-
+/***********Tool************/
+#descrip, #des_map {
+	margin: 5px;
+}
 
 #intro{padding:30px 0 5px 0; font-size:16px; font-family:Georgia, "Times New Roman", Times, serif;}
 #intro .fl_left{display:block; float:left; width:515px; height:240px; margin:0; padding:30px; color:#FFFFFF; background-color:#2684B7;}

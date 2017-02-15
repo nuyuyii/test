@@ -31,4 +31,17 @@ def data_ltln(request):
     return JsonResponse(lat, safe=False)
 
 def home_page(request):
+    cli = Climdex("/home/nuyuyii/401_Project/seaclid/ec85indcal.csv")
+    if request.method == 'POST':
+        #POST goes here . is_ajax is must to capture ajax requests. Beginner's pit.
+        txx_data = cli.txx()
+        if request.is_ajax():
+            #Always use get on request.POST. Correct way of querying a QueryDict.
+            path_file = request.POST.get('path_file')
+            print(path_file)
+           
+            data = {"path_file":getattr(cli, path_file)()}
+    
+            #Returning same data back to browser.It is not possible with Normal submit
+            return JsonResponse(data)
     return render(request, 'home.html')
