@@ -58,7 +58,7 @@
            
   </style>
 </head>
-<body> 
+<body onload="makeBase()"> 
 <!--script src="{% static 'js/GraphPlot.js'%}" type="text/javascript"></script-->
 
 <!-- Row 1 header -->
@@ -110,7 +110,6 @@
       <div class="toolBox">
          <p>&nbsp;&nbsp;Select a variable / index
           <select name="s-variable" class="select-style l-blue semi-sq selectpicker" onchange="ChangeCarList()" id="vars" >
-            <option value=" " selected>Please Select</option>
             <option value="1" >Temperature</option>
             <option value="2" >Preciptation</option>
           </select>

@@ -1,14 +1,28 @@
 
 /*******************************/
 /************ Label ************/
+var carsAndModels = {};
+//<option value=" " selected>Please Select</option>
+function makeBase(){
+    carsAndModels['1'] = ['su', 'fd', 'id','tr','gsl','wsdi','csdi','dtr','txx','tnx','txn','tnn','tn10p','tx10p','tn90p','tx90p'];
+    carsAndModels['2'] = ['rx1day', 'rx5day', 'sdii', 'r10mm','r20mm','rnnmm','cdd','cwd','r95ptot','r99ptot','prcptot'];
+    ChangeCarList();
+    //document.getElementById("tool").innerHTML = ind;
+    ajaxData();   
+}
 
 //var nLegend = ["temperature (°C)", "preciptation (mm/day)"]
 var nLegend = {"tem": {"color":["#4575b4", "#ffffbf", "#a50026"],
 "name":"Temperature (°C)","domain":[-10, 20, 35],"scale":[-10, 40]},
-"prec":{"color":["#543005","#FFFFFF","#2EFEF7","#003c30"],"name":"preciptation (kg/day)",
-"domain":[0, .1, .15, .2],"scale":[0, .2]}};
-
+"prec":{"color":["#ffffe5","#33FFCC","#00441b"],"name":"preciptation (mm/day)",
+"domain":[-5, 2,14],"scale":[0, 15]}};
+//["#543005","#FFFFFF","#2EFEF7","#003c30"]
+//["#9F5000","#ffffe5","#0C6944"]
+//"#543005","#7fcdbb","#2c7fb8"
+//"prec":{"color":["#ffffe5","#33FFCC","#00441b"],"name":"preciptation (mm/day)",
+//"domain":[-3, 5,18],"scale":[0, 20]}};
 var indL = "tem";
+var i_ticks = 15;  // max_value is scale/2
 
 var legend = d3.select('#legend_p');
 
@@ -28,7 +42,7 @@ var xAxis = d3.svg.axis()
     .scale(x)
     .orient("bottom")
     .tickSize(20)
-    .ticks(20)
+    .ticks(i_ticks)
     .tickFormat(d3.format("+.0f"));
 
 //console.log("legend w/h",widthL,heightL);
@@ -41,7 +55,7 @@ var svgL = legend.append("svg")
     .attr("transform", "translate(10,30)");
 
 svgL.selectAll("rect")
-    .data(pair(x.ticks(20)))
+    .data(pair(x.ticks(i_ticks)))
   .enter().append("rect")
     .attr("height", 20)
     .attr("x", function(d) { return x(d[0]); })
@@ -91,7 +105,7 @@ function pair(array) {
 
                 zoomMap.translate(t);
                 gMap.attr("transform", "translate(" + t + ")scale(" + s + ")");
-                //gMap.selectAll("path").style("stroke-width", .5 / s + "px");
+                gMap.selectAll("path").attr("class","MapColor");
                 //console.log(t,s);
                 gMap2.attr("transform", "translate(" + t + ")scale(" + s + ")");
                 gMap2.selectAll("path").style("stroke-width", .9 / s + "px");
@@ -123,24 +137,47 @@ function pair(array) {
 
             //*************port layer map
             var dataTs,dataLand,dataPr;
+
+            var data9T;
+            d3.json('../static/data/geoAvgTsPrG9.json', function(json) {
+                    console.log("FF",json.length);   
+                    data9T = json.features;
+            });
+
+            function c9(d){
+                return color(d.properties.allts);
+            }
  
             function drawMapL1(json){
-                console.log(json[1]);
+                //console.log(json[1]);
                 gMap.selectAll("path")
                     .data(json)
                     .enter().append("path")
                     .attr("d", pathMap)
                     .attr("class","MapColor")
-                    .style("fill", function(d){ return color(d.properties.allts);})
-                    .style("stroke-width",0)
-                    .style("stroke-opacity",0)
-                    .style("opacity",1);
+                    .style("fill", function(data9T){ return color(data9T.properties.allts);})
+                    .style("stroke",function(data9T){ return color(data9T.properties.allts);});
+                    //.style("stroke-width",1)data9T
+                    //.style("stroke-opacity",1);
+                    //.style("opacity",1);
             }
 
-            d3.json('../static/data/geoAvgTsPrG9.json', function(json) {
+            d3.json('../static/data/geoAvgTsPrG9t.json', function(json) {
                 dataTs = json.features;
+                var dou=[];
+                //var tt = dataTs.properties.ts[1]
+                console.log(data9T[0].properties.allts)
+                dataTs.forEach(function(d, i){
+                    //dou.push(data9T[i].properties.allts)
+                    d.properties.allts = +data9T[i].properties.allts;
+                })
+                //console.log(dou)
                 drawMapL1(dataTs);
             });
+
+            
+
+            
 
             /*
             d3.json('../static/data/geoTsPrAvg.json', function(json) {

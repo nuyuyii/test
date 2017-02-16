@@ -397,9 +397,9 @@ for i in range(0,len(eindex)):
 '''
 #climdex={}
 print(year[0],year[1], len(eindex))
-ind = 1
+ind = 14422
 
-for x in range(0,len(lats)):#len(lats[0:253])):
+for x in range(57,len(lats)):#len(lats[0:253])):
     for y in range(0,len(lons)):#len(lons[0:191])):
         o=feature.objects.get(pk=ind)
         clim = climatecal(year[0],year[1],lats[x],lons[y],str_date)
