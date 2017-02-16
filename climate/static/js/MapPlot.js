@@ -87,7 +87,7 @@ function pair(array) {
 
            
 
-            var zoomMap = d3.behavior.zoom().translate([0, 0])//.center([0,0])
+            var zoomMap = d3.behavior.zoom().translate([0,0])//.center([117.9, 6.7])
                 .scale(1).scaleExtent([1, 20]).on("zoom", moveMap);
 
             function moveMap(){
@@ -103,6 +103,9 @@ function pair(array) {
                 t[0] = Math.min(w_max, Math.max(w_min, t[0]));
                 t[1] = Math.min(h_max, Math.max(h_min, t[1]));
 
+                
+                console.log(t,s)
+
                 zoomMap.translate(t);
                 gMap.attr("transform", "translate(" + t + ")scale(" + s + ")");
                 gMap.selectAll("path").attr("class","MapColor");
@@ -115,8 +118,10 @@ function pair(array) {
             var projection, pathMap, svgMap, gMap, gMap2;
             setupMap(width,height);
 
+            console.log(width,height)
+
             function setupMap(width,height){
-                
+               
                projection = d3.geo.equirectangular()
                 .center([117.9, 6.7]).scale(width) //width/2/Math.PI
                 .translate([width/2, height/2]);
@@ -216,7 +221,7 @@ function pair(array) {
                     height = parseInt(mapP.style('height'));
  
                     projection
-                        .scale(width/2/Math.PI)
+                        .scale(width) //width/2/Math.PI
                         .translate([width/2, height/2]);
  
                     gMap.selectAll("path")
@@ -245,7 +250,7 @@ function pair(array) {
                 drawMapL0(dataLand);
                 drawMapL1(dataTs);
                 setupMap(width,height);*/
-            }
+            };
 
 d3.selectAll("button[resetP]").on("click", resetMap);
 
@@ -303,6 +308,6 @@ function zoomClick() {
     //interpolateZoom([view.x, view.y], view.k);
 }
 
-d3.selectAll('button[zoomP]').on('click', zoomClick);
+//d3.selectAll('button[zoomP]').on('click', zoomClick);
 
 
