@@ -139,6 +139,17 @@ div.wrapper h5, div.wrapper h6{margin:0 0 20px 0;
 	stroke-opacity:1;
 	opacity:1;
 }
+/* ------------------------------------------- */
+/* --------------- grid ---------------------- */
+.graticule{
+	fill: none;
+	stroke: #000;
+	stroke-width: .5px;
+	stroke-opacity: .5;
+}
+
+/* ------------------------------------------- */
+/* ------------- Graph ----------------------- */
 #map {
     background-color:#F4F4F4; position:relative;
     margin-bottom: 20px;

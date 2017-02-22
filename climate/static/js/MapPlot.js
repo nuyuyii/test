@@ -1,8 +1,12 @@
 
-/*******************************/
-/************ Label ************/
+// -$("#scatter").load("{% url 'home' %}");-->
+
+
+
+/* ******************************************************** */  
+/* ***************** Onload Body HTML ********************* */
+/* ******************************************************** */
 var carsAndModels = {};
-//<option value=" " selected>Please Select</option>
 function makeBase(){
     carsAndModels['1'] = ['su', 'fd', 'id','tr','gsl','wsdi','csdi','dtr','txx','tnx','txn','tnn','tn10p','tx10p','tn90p','tx90p'];
     carsAndModels['2'] = ['rx1day', 'rx5day', 'sdii', 'r10mm','r20mm','rnnmm','cdd','cwd','r95ptot','r99ptot','prcptot'];
@@ -11,7 +15,10 @@ function makeBase(){
     ajaxData();   
 }
 
-//var nLegend = ["temperature (°C)", "preciptation (mm/day)"]
+/* ******************************************************** */  
+/* ****************** Legend Color Map ******************** */
+/* ******************************************************** */
+// var nLegend = ["temperature (°C)", "preciptation (mm/day)"]
 var nLegend = {"tem": {"color":["#4575b4", "#ffffbf", "#a50026"],
 "name":"Temperature (°C)","domain":[-10, 20, 35],"scale":[-10, 40]},
 "prec":{"color":["#ffffe5","#33FFCC","#00441b"],"name":"preciptation (mm/day)",
@@ -76,130 +83,129 @@ function pair(array) {
   });
 }
 
-/*******************************/
-/************ map **************/
+/* ******************************************************** */  
+/* **************** Map Projection d3 plot **************** */
+/* ******************************************************** */
+var mapP = d3.select('#map_p');
+//var tooltip = map.append("div").attr("class", "tooltip hidden");
 
-            var mapP = d3.select('#map_p');
-            //var tooltip = map.append("div").attr("class", "tooltip hidden");
+var width = parseInt(mapP.style('width')),
+height = parseInt(mapP.style('height'));
 
-            var width = parseInt(mapP.style('width')),
-                height = parseInt(mapP.style('height'));
-
-           
-
-            var zoomMap = d3.behavior.zoom().translate([0,0])//.center([117.9, 6.7])
+var graticule = d3.geo.graticule();
+var zoomMap = d3.behavior.zoom().translate([0,0])//.center([117.9, 6.7])
                 .scale(1).scaleExtent([1, 20]).on("zoom", moveMap);
 
-            function moveMap(){
-                var t = d3.event.translate;
-                var s = d3.event.scale;
-                //var c = d3.event.center;
+function moveMap(){
+    var t = d3.event.translate;
+    var s = d3.event.scale;
 
-                var w_max = 0;
-                var w_min = width * (1 - s);
-                var h_max = height < s*width/2 ? s*(width/2-height)/2 : (1-s)*height/2;
-                var h_min = height < s*width/2 ? -s*(width/2-height)/2-(s-1)*height : (1-s)*height/2;
+    var w_max = 0;
+    var w_min = width * (1 - s);
+    var h_max = height < s*width/2 ? s*(width/2-height)/2 : (1-s)*height/2;
+    var h_min = height < s*width/2 ? -s*(width/2-height)/2-(s-1)*height : (1-s)*height/2;
 
-                t[0] = Math.min(w_max, Math.max(w_min, t[0]));
-                t[1] = Math.min(h_max, Math.max(h_min, t[1]));
+    t[0] = Math.min(w_max, Math.max(w_min, t[0]));
+    t[1] = Math.min(h_max, Math.max(h_min, t[1]));
 
-                
-                console.log(t,s)
+    console.log(t,s)
 
-                zoomMap.translate(t);
-                gMap.attr("transform", "translate(" + t + ")scale(" + s + ")");
-                gMap.selectAll("path").attr("class","MapColor");
-                //console.log(t,s);
-                gMap2.attr("transform", "translate(" + t + ")scale(" + s + ")");
-                gMap2.selectAll("path").style("stroke-width", .9 / s + "px");
-            }
+    zoomMap.translate(t);
+    gMap.attr("transform", "translate(" + t + ")scale(" + s + ")");
+    gMap.selectAll("path").attr("class","MapColor");
+    //console.log(t,s);
+    gMap2.attr("transform", "translate(" + t + ")scale(" + s + ")");
+    gMap2.selectAll("path").style("stroke-width", .9 / s + "px");
+}
 
-            //*************setup map
-            var projection, pathMap, svgMap, gMap, gMap2;
-            setupMap(width,height);
+// --------------------------------------
+// --------------- setup map
+var projection, pathMap, svgMap, gMap, gMap2;
+setupMap(width,height);
 
-            console.log(width,height)
+console.log(width,height)
 
-            function setupMap(width,height){
+function setupMap(width,height){
                
-               projection = d3.geo.equirectangular()
+    projection = d3.geo.equirectangular()
                 .center([117.9, 6.7]).scale(width) //width/2/Math.PI
                 .translate([width/2, height/2]);
 
-               pathMap = d3.geo.path().projection(projection);
-               svgMap = mapP
-                .append("svg")
-                .attr("width", '100%')
-                .attr("height", '100%')
-                .attr("class","svgMap")
-                .call(zoomMap);
+    pathMap = d3.geo.path().projection(projection);
+    svgMap = mapP
+            .append("svg")
+            .attr("width", '100%')
+            .attr("height", '100%')
+            .attr("class","svgMap")
+            .call(zoomMap);
 
-               gMap = svgMap.append("g"),
-               gMap2 = svgMap.append("g");
-            }
+    gMap = svgMap.append("g"),
+    gMap2 = svgMap.append("g");
+}
 
+// --------------------------------------
+// --------------- port layer0 color map
+var dataTs,dataLand,dataPr;
 
+var data9T;
+d3.json('../static/data/geoAvgTsPrG9.json', function(json) {
+    console.log("FF",json.length);   
+    data9T = json.features;
+});
 
-            //*************port layer map
-            var dataTs,dataLand,dataPr;
-
-            var data9T;
-            d3.json('../static/data/geoAvgTsPrG9.json', function(json) {
-                    console.log("FF",json.length);   
-                    data9T = json.features;
-            });
-
-            function c9(d){
-                return color(d.properties.allts);
-            }
- 
-            function drawMapL1(json){
-                //console.log(json[1]);
-                gMap.selectAll("path")
-                    .data(json)
-                    .enter().append("path")
-                    .attr("d", pathMap)
-                    .attr("class","MapColor")
-                    .style("fill", function(data9T){ return color(data9T.properties.allts);})
-                    .style("stroke",function(data9T){ return color(data9T.properties.allts);});
+function drawMapL0(json){
+    //data temp coordinate
+// d.id 0-252 keep  d.coordinate[0][1] lon -180 to 180 
+// d.id %252 keep d.coordinate[0][0] lat -90 to -90
+    //console.log(json[1]);
+    gMap.selectAll("path")
+        .data(json)
+        .enter().append("path")
+        .attr("d", pathMap)
+        .attr("class","MapColor")
+        .style("fill", function(data9T){ return color(data9T.properties.allts);})
+        .style("stroke",function(data9T){ return color(data9T.properties.allts);});
                     //.style("stroke-width",1)data9T
                     //.style("stroke-opacity",1);
                     //.style("opacity",1);
-            }
+}
 
-            d3.json('../static/data/geoAvgTsPrG9t.json', function(json) {
-                dataTs = json.features;
-                var dou=[];
-                //var tt = dataTs.properties.ts[1]
-                console.log(data9T[0].properties.allts)
-                dataTs.forEach(function(d, i){
-                    //dou.push(data9T[i].properties.allts)
-                    d.properties.allts = +data9T[i].properties.allts;
-                })
+d3.json('../static/data/geoAvgTsPrG9t.json', function(json) {
+    dataTs = json.features;
+    var dou=[];
+    //var tt = dataTs.properties.ts[1]
+    console.log(data9T[0].properties.allts)
+    dataTs.forEach(function(d, i){
+    //dou.push(data9T[i].properties.allts)
+        d.properties.allts = +data9T[i].properties.allts;
+    })
                 //console.log(dou)
-                drawMapL1(dataTs);
-            });
+    drawMapL0(dataTs);
+});
 
             
-
-            
-
-            /*
+           /*
             d3.json('../static/data/geoTsPrAvg.json', function(json) {
                 console.log(json);
             });*/
+// --------------------------------------
+// --------------- Base map
+d3.json('../static/data/world-topo-min.json', function(json) {
+    dataLand = topojson.feature(json, json.objects.countries).features
+    drawMapL1(dataLand);
+});
 
-            d3.json('../static/data/world-topo-min.json', function(json) {
-                dataLand = topojson.feature(json, json.objects.countries).features
-                drawMapL0(dataLand);
-            });
+function drawMapL1(json){
+    gMap2.append("path")
+          .datum(graticule)
+          .attr("class","graticule")
+          .attr("d", pathMap);
 
-            function drawMapL0(json){
-                gMap2.selectAll("path")
-                    .data(json)
-                    .enter().append("path")
-                    .attr("d", pathMap)
-                    .style("stroke-width",0.9);
+    gMap2.selectAll("path")
+         .data(json)
+         .enter().append("path")
+         .attr("d", pathMap)
+         .style("stroke-width",0.9);
                     //.attr("class","country");
                     //.style("fill","white");
                     /*.on("mousemove", function(d,i){
@@ -214,48 +220,50 @@ function pair(array) {
                     .on("mouseout",  function(d,i) {
                         tooltip.classed("hidden", true);
                     });*/
-            }
+}
 
-            d3.select(window).on('resize', function() {
-                    width = parseInt(mapP.style('width'));
-                    height = parseInt(mapP.style('height'));
- 
-                    projection
-                        .scale(width) //width/2/Math.PI
-                        .translate([width/2, height/2]);
- 
-                    gMap.selectAll("path")
-                        .attr("d", pathMap);
+// --------------------------------------
+// --------------- Resize window
+d3.select(window).on('resize', function() {
+    width = parseInt(mapP.style('width'));
+    height = parseInt(mapP.style('height'));
 
-                    gMap2.selectAll("path")
-                        .attr("d", pathMap);
-                });
+    projection.scale(width) //width/2/Math.PI
+              .translate([width/2, height/2]);
+    pathMap = d3.geo.path().projection(projection);
+    gMap.selectAll("path")
+        .attr("d", pathMap);
 
-            function resetMap(){
-                width = parseInt(mapP.style('width'));
-                height = parseInt(mapP.style('height'));
-                console.log("Reset Ok");
-               // var rt = [width/2, height/2];
-                gMap.transition()
-                   .duration(500)
-                   .attr("transform","translater("+width/2+","+height/2+")scale(" +width+ ")");
-                   //.style("stroke-width", .5 + "px");
-                gMap2.transition()
-                   .duration(500)
-                   .attr("transform","translater("+width/2+","+height/2+")scale(" +width+ ")")
-                   .style("stroke-width", .9 + "px");
+    gMap2.selectAll("path")
+         .attr("d", pathMap);
+});
+
+// --------------------------------------
+// --------------- Redraw Map
+function resetMap(){
+    width = parseInt(mapP.style('width'));
+    height = parseInt(mapP.style('height'));
+    console.log("Reset Ok");
+    gMap.transition()
+        .duration(500)
+        .attr("transform","translater("+width/2+","+height/2+")scale(" +width+ ")");
+        //.style("stroke-width", .5 + "px");
+    gMap2.transition()
+         .duration(500)
+         .attr("transform","translater("+width/2+","+height/2+")scale(" +width+ ")")
+         .style("stroke-width", .9 + "px");
 
                /* d3.select('.svgMap').remove();
                 setupMap(width,height)
                 drawMapL0(dataLand);
                 drawMapL1(dataTs);
                 setupMap(width,height);*/
-            };
+};
 
 d3.selectAll("button[resetP]").on("click", resetMap);
 
-
-
+// --------------------------------------
+// --------------- Zoom button
 function zoomed() {
     svgMap.attr("transform",
         "translate(" + zoomMap.translate() + ")" +

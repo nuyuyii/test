@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html>
-{% load staticfiles %}
-<head>
-	<title>Climate Project</title>
-	<meta charset="utf-8" http-equiv="X-UA-Compatible">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, IE=Edge">
-	<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
-  <script src="{% static 'node_modules/d3.v4.min.js' %}" charset="utf-8" type="text/javascript"></script>
-  <script src="{% static 'node_modules/jquery-2.1.4.min.js' %}"></script>
-  
+{% extends 'base.html' %}
+{% block title %}Climate Project{% endblock %}
+{% block meta %}
   <style type="text/css">  
         svg {
           font: 10px sans-serif;
@@ -57,51 +49,40 @@
               
            
   </style>
-</head>
-<body onload="makeBase()"> 
-<!--script src="{% static 'js/GraphPlot.js'%}" type="text/javascript"></script-->
-<!-- Row 1 header -->
-<div class="wrapper col1">
-  <div id="header">
-      <h1>Climate Project</h1>
-    <br class="clear" />
-  </div>
-</div> 
+{% endblock %}
 
-<!-- Row 2 navbar -->
-<div class="wrapper col2">
-  <div id="tbar">
-    <div id="tnav">
-    	<ul>
-    		<li class="active"><a href="{% url 'home' %}">Home</a></li>
-    		<li><a href="{% url 'map' %}">Contrast</a></li>
-    		<li><a href="../">About</a></li>
-    	</ul>
-    </div>
-    <br class="clear" />
-  </div>
-</div>
+{% block begin %}makeBase(){% endblock %}
 
-<!-- Row 3 map -->
-<div class="wrapper col3">
-  <div id="container">
+{% block head %}
+  <h1>Climate Project</h1>
+{% endblock %}
+
+{% block tnav %}
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li class="active"><a href="{% url 'map' %}">Contrast</a></li>
+    <li><a href="../">About</a></li>
+{% endblock %}
+
+
+{% block col3 %}
     <div class="fl_left">
       <div class="mapBox">
-        <div class="mapBox-heading"><p>Map</p></div>
+        <div class="mapBox-heading"> Historical Map</div>
         <div class="mapBox-body">
-          <div class="mapBody"><div id="map_p"></div></div>          
+          <div class="mapBody"><div id="map_past"></div></div>
         </div>
-        <!--<button resetP class="button2">ReDraw</button>  -->
+        <!--
+        <button resetP class="button1">ReDraw</button>
+        <button zoomP id="zoom_in">+</button>
+        <button zoomP id="zoom_out">-</button>   -->
       </div>   
     </div>                        
 
     <div class="fl_right">
       <div class="mapBox">
-        <div class="mapBox-heading" >
-        <p id="GraphName">Graph</p>
-        </div>
+        <div class="mapBox-heading">Future Map</div>
         <div class="mapBox-body">
-          <div class="mapBody"><div id="map"></div></div>
+          <div class="mapBody"><div id="map_p"></div></div>
         </div>
       </div>
     </div>
@@ -129,67 +110,27 @@
     <div class="fl_legend">
        <div id="legend_p"></div></div>
 
-    <div class="fl_time">
-    	<div id="map3"></div>
-    </div>
-    <br class="clear" />
-  </div>
-</div>
+{% endblock %}
 
-<!-- Row 4 graph -->
-<div class="wrapper col4">
-  <div id="container">
-    <div class="fl_left">
-      <div class="mapBox">
-        <div class="mapBox-heading"> Historical Map</div>
-        <div class="mapBox-body">
-          <div class="mapBody"><div id="map_past"></div></div>
-        </div>
-        <!--
-        <button resetP class="button1">ReDraw</button>
-        <button zoomP id="zoom_in">+</button>
-        <button zoomP id="zoom_out">-</button>   -->
-      </div>   
-    </div>                        
+{% block col4 %}
 
-    <div class="fl_right">
-      <div class="mapBox">
-        <div class="mapBox-heading">Future Map</div>
-        <div class="mapBox-body">
-        </div>
-      </div>
-    </div>
-    <br class="clear" />
-  </div>
-</div>
 
-<!-- Row5 footer -->
-<div class="wrapper col5">
-  <div id="footer">
+{% endblock %}
+
+{% block col5 %}
     <div class="fl_left">
       <h2>Climate.</h2>
       <p>U</p>
       <p class="readmore"><a href="#">Contact us</a></p>
     </div>
-    <br class="clear" />
-  </div>
-</div>
+{% endblock %}
 
-<!-- Row 6 final -->
-<div class="wrapper col6">
-  <div id="follow">
-    <p class="fl_left">Climate Project 2017</p>
-    <br class="clear" />
-  </div>
-</div>
-
-<!-- load the necessary script -->
+{% block JSload %}
+{% load staticfiles %}
 <script src="{% static 'node_modules/topojson/node_modules/d3/d3.js' %}"></script>
 <script src="{% static 'node_modules/d3-geo-projection/d3.geo.projection.js' %}"></script>
 <script src="{% static 'node_modules/topojson/build/topojson.js' %}"></script>
 <script src="{% static 'js/MapPlot.js' %}"></script>
 {% csrf_token %}
 <script type="text/javascript" src="{% static 'js/GraphPlot.js'%}"></script>
-
-</body>
-</html>
+{% endblock %}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, IE=Edge">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+    <script src="{% static 'node_modules/d3.v4.min.js' %}" charset="utf-8" type="text/javascript"></script>
+    <script src="{% static 'node_modules/jquery-2.1.4.min.js' %}"></script>
+        {% block meta %}
+        {% endblock %}
+</head>
+<body onload="{% block begin %}{% endblock %}">
+<!-- Row 1 header -->
+<div class="wrapper col1">
+  <div id="header">
+      {% block head %}{% endblock %}
+    <br class="clear" />
+  </div>
+</div> 
+
+
+<!-- Row 2 navbar -->
+<div class="wrapper col2">
+  <div id="tbar">
+    <div id="tnav">
+      <ul>
+       {% block tnav %}{% endblock %}
+      </ul>
+    </div>
+    <br class="clear" />
+  </div>
+</div>
+
+<!-- Row 3 map -->
+<div class="wrapper col3">
+  <div id="container">
+     {% block col3 %}{% endblock %}
+    <br class="clear" />
+  </div>
+</div>
+
+<!-- Row 4 graph -->
+<div class="wrapper col4">
+  <div id="container">
+    {% block col4 %}{% endblock %}
+    <br class="clear" />
+  </div>
+</div>
+
+<!-- Row5 footer -->
+<div class="wrapper col5">
+  <div id="footer">
+    {% block col5 %}{% endblock %}
+    <br class="clear" />
+  </div>
+</div>
+
+<!-- Row 6 final -->
+<div class="wrapper col6">
+  <div id="follow">
+    <p class="fl_left">Climate Project 2017</p>
+    <br class="clear" />
+  </div>
+</div>
+
+<!-- load the necessary script -->
+{% block JSload %}{% endblock %}
+
+</body>
+</html>

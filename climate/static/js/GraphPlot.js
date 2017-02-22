@@ -1,8 +1,8 @@
   
-    function ChangeCarList() {
-        var carList = document.getElementById("vars");
-        var modelList = document.getElementById("cindex");
-        var selCar = carList.options[carList.selectedIndex].value;
+function ChangeCarList() {
+    var carList = document.getElementById("vars");
+    var modelList = document.getElementById("cindex");
+    var selCar = carList.options[carList.selectedIndex].value;
 
         while (modelList.options.length) {
             modelList.remove(0);
@@ -13,28 +13,64 @@
             for (i = 0; i < cars.length; i++) {
                 var car = new Option(cars[i], i);
                 modelList.options.add(car);
+        }
+    }
+} 
+/**********************************************************/  
+/************** Select index (use ajax) *******************/
+/**********************************************************/
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
             }
         }
-    } 
+    }
+    return cookieValue;
+}
 
+$( "select" ).change(function (e) {
+    e.preventDefault();
+    //document.getElementById("tool").innerHTML = ind;
+    ajaxData();             
+});
+
+function ajaxData(){
+    var csrftoken = getCookie('csrftoken');
+    //label1Visible()
+    var index = $("#cindex").val();
+    var variable = $( "#vars" ).val();
+    var ind = carsAndModels[variable][index];
+    $.ajax({
+        url : window.location.href, // the endpoint,commonly same url
+        type : "POST", // http method
+        data : { csrfmiddlewaretoken : csrftoken, 
+            path_file : ind
+        }, // data sent with the post request
+
+        // handle a successful response
+        success : function(json) {
+            console.log(json); // another sanity check
+            //On success show the data posted to server as
+            data(json,ind,variable);
+                                    //alert('Hi '+json['path_file']);
+        },
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+    });
+}
 ///////////////////////////////////////////////////////////////////////////
 //////////////////// Plot Graph Average Max Min ///////////////////////////
 /////////////////////////////////////////////////////////////////////////// 
-        function getCookie(name) {
-               var cookieValue = null;
-               if (document.cookie && document.cookie != '') {
-                 var cookies = document.cookie.split(';');
-                 for (var i = 0; i < cookies.length; i++) {
-                 var cookie = jQuery.trim(cookies[i]);
-                 // Does this cookie string begin with the name we want?
-                 if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                     break;
-                  }
-             }
-         }
-         return cookieValue;
-        }
+
         function data(data,index,vars){
              // document.getElementById("map_p").innerHTML = index+data['path_file'];
              d3.select("#map").selectAll("svg").remove();
@@ -131,41 +167,8 @@
         //var su = {{SU|safe}}
         //chart_clim(su,"days",' Number of summer days');
         //document.getElementById("des_map").innerHTML = "Number of summer days: Annual count of days when TX (daily maximum temperature) > 25 Celsius.Let TXij be daily maximum temperature on day i in year j. Count the number of days where: TXij > 25 Celsius.";
-      
-        $( "select" ).change(function (e) {
-              e.preventDefault();
-              //document.getElementById("tool").innerHTML = ind;
-              ajaxData();             
-        });
 
-        function ajaxData(){
-        	  var csrftoken = getCookie('csrftoken');
-              //label1Visible()
-              var index = $("#cindex").val();
-              var variable = $( "#vars" ).val();
-              var ind = carsAndModels[variable][index];
-              $.ajax({
-                     url : window.location.href, // the endpoint,commonly same url
-                     type : "POST", // http method
-                     data : { csrfmiddlewaretoken : csrftoken, 
-                     path_file : ind
-                   }, // data sent with the post request
 
-                   // handle a successful response
-                   success : function(json) {
-                        console.log(json); // another sanity check
-                        //On success show the data posted to server as
-                                 data(json,ind,variable);
-                                    //alert('Hi '+json['path_file']);
-                   },
-
-                   // handle a non-successful response
-                   error : function(xhr,errmsg,err) {
-                        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-                   }
-               });
-
-        }
   
         var customTimeFormat = d3.time.format.multi([
             [".%L", function(d) { return d.getMilliseconds(); }],

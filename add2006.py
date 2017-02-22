@@ -343,10 +343,7 @@ class climatecal(object):
  
 
 
-lat1 = 122
-lon1 = 222
 
-str_ate = "2008-12-31"
 
 #result = clim.prcptot()
 m = Dataset('/media/nuyuyii/DATA/CSIRO_MK/RCP85/csiromk36_rcp85_ps-tas-t2m.201002.nc', 'r')
@@ -368,28 +365,18 @@ res_date = []
 
 start_time = time.time()
 
-'''
-climdex = {"2009":{"su":[],"fd":[],"id":[],"tr":[],"gsl":[],"wsdi":[],"csdi":[],
-    "dtr":[],"txx":[],"tnx":[],"txn":[],"tnn":[],"tn10p":[],"tx10p":[],"tn90p":[],
-    "tx90p":[],"rx1day":[],"rx5day":[],"sdii":[],"r10mm":[],"r20mm":[],"rnnmm":[],
-    "cdd":[],"cwd":[],"r95ptot":[],"r99ptot":[],"prcptot":[]}} 
-
-coordinate = {
-    "coor":[]
-}'''
-
 ind_su =[]
 pic = []
 
 
 eindex=["su","fd","id","tr","gsl","dtr","txx","tnx","txn","tnn","rx1day","rx5day","sdii","r10mm","r20mm","rnnmm","cdd","cwd","r99ptot","prcptot"]
-lisYear=range(2007,2100)
+lisYear=range(2006,2007)
 eyear=[format(x,'04d') for x in lisYear]
 
 #["2009","2010"]
 #["su","fd","id","tr","gsl","wsdi","csdi","dtr","txx","tnx","txn","tnn","tn10p","tx10p","tn90p","tx90p","rx1day","rx5day","sdii","r10mm","r20mm","rnnmm","cdd","cwd","r95ptot","r99ptot","prcptot"]
-year=[2007,2100]
-str_date = "2006-12-31"
+year=[2006,2007]
+str_date = "2005-12-31"
 
 '''
 for i in range(0,len(eindex)):
@@ -398,10 +385,10 @@ for i in range(0,len(eindex)):
 '''
 #climdex={}
 print(year[0],year[1], len(eindex))
-ind = 43264
+ind = 1
 
 # Note 21499 cdd Na
-for x in range(171,len(lats)):#len(lats[0:253])):
+for x in range(0,len(lats)):#len(lats[0:253])):
     for y in range(0,len(lons)):#len(lons[0:191])):
         o=feature.objects.get(pk=ind)
         clim = climatecal(year[0],year[1],lats[x],lons[y],str_date)
@@ -464,13 +451,13 @@ for x in range(171,len(lats)):#len(lats[0:253])):
         # res_prctot 
         value[eindex[19]] = powerpack.prcptot(year[0],year[1],len(pr),str_date,tmax,tmin,pr)
 
-        o.climdex = {}
-
+        #print (o.climdex['su']['2006'])  
         for i in range(0,len(eindex)):
-            #print(eyear[83])
-            #print (eindex[i],value[eindex[i]][83])  
-            o.climdex[eindex[i]]={}
+            #print(eyear[0])
+            o.climdex[eindex[i]][eyear[0]]={}
+            #print (eindex[i],value[eindex[i]][0])  
 
+        #print (o.climdex['su']['2006'])  
 
         for ey in range(0,len(eyear)):             
             o.climdex[eindex[0]][eyear[ey]] = value[eindex[0]][ey]
@@ -495,12 +482,10 @@ for x in range(171,len(lats)):#len(lats[0:253])):
             o.climdex[eindex[19]][eyear[ey]] = value[eindex[19]][ey]
         o.save()
         ind=ind+1
-
-
     print(lons[y],'--',lats[x],";x ",x,"-y ",y,";ind ",ind)
 
 
-
+# pg_dump -D -a -t climate_feature > p85bk.sql
         #ind_su.append([str(year),res_su[0]])
         #pic.append([lons[x],lats[y]])
 
